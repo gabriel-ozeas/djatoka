@@ -27,56 +27,47 @@ import gov.lanl.adore.djatoka.io.FormatIOException;
 import gov.lanl.adore.djatoka.io.IReader;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.media.jai.RenderedImageAdapter;
-
-import org.apache.log4j.Logger;
-
-import com.sun.media.jai.codec.ImageCodec;
-import com.sun.media.jai.codec.ImageDecoder;
-
 /**
- * Returns BufferedImage give a PNM image InputStream or file path. 
- * Uses JAI to open PNM formatted images.
+ * Returns BufferedImage give a PNM image InputStream or file path.
+ * 
  * @author Ryan Chute
- *
+ * @author Kevin S. Clarke &lt;<a href="mailto:ksclarke@gmail.com">ksclarke@gmail.com</a>&gt;
  */
-public class PNMReader implements IReader{
-	static Logger logger = Logger.getLogger(PNMReader.class);
-	/**
-	 * Returns a BufferedImage instance for provided image file path.
-	 * @param input absolute file path for image file
-	 * @return a BufferedImage instance for source image file
-	 * @throws FormatIOException
-	 */
-	public BufferedImage open(String input) throws FormatIOException {
-		RenderedImageAdapter aid = null;
-		try {
-			ImageDecoder enc = ImageCodec.createImageDecoder("PNM", new File(input), null);
-			aid = new RenderedImageAdapter(enc.decodeAsRenderedImage());
-		} catch (IOException e) {
-			return null;
-		}
-		return aid.getAsBufferedImage();
-	}
+public class PNMReader implements IReader {
 
-	/**
-	 * Returns a BufferedImage instance for provided InputStream
-	 * @param input an InputStream consisting of an image bitstream
-	 * @return a BufferedImage instance for source image InputStream
-	 * @throws FormatIOException
-	 */
-	public BufferedImage open(InputStream input) throws FormatIOException {
-		RenderedImageAdapter aid = null;
-		try {
-			ImageDecoder enc = ImageCodec.createImageDecoder("PNM", input, null);
-			aid = new RenderedImageAdapter(enc.decodeAsRenderedImage());
-		} catch (IOException e) {
-			return null;
-		}
-		return aid.getAsBufferedImage();
-	}
+    /**
+     * Returns a BufferedImage instance for provided image file path.
+     * 
+     * @param aFileName absolute file path for image file
+     * @return a <code>BufferedImage</code> instance for source image file
+     * @throws gov.lanl.adore.djatoka.io.FormatIOException
+     */
+    @Override
+    public BufferedImage open(final String aFileName) throws FormatIOException {
+        try {
+            return new PNMImage(aFileName).getBufferedImage();
+        } catch (final IOException details) {
+            throw new FormatIOException(details);
+        }
+    }
+
+    /**
+     * Returns a BufferedImage instance for provided InputStream
+     *
+     * @param aInputStream an InputStream consisting of an image bitstream
+     * @return a <code>BufferedImage</code> instance for source image InputStream
+     * @throws gov.lanl.adore.djatoka.io.FormatIOException
+     */
+    @Override
+    public BufferedImage open(final InputStream aInputStream) throws FormatIOException {
+        try {
+            return new PNMImage(aInputStream).getBufferedImage();
+        } catch (final IOException details) {
+            throw new FormatIOException(details);
+        }
+    }
+
 }
