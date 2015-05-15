@@ -2,3 +2,6 @@
 .idea
 bin
 dist
+lib
+target
+*.tar.gz
