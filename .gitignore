@@ -2,6 +2,7 @@
 .idea
 bin
 dist
-lib
+lib/*
 target
 *.tar.gz
+tmp
